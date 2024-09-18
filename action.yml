@@ -1,0 +1,13 @@
+name: 'Programmable Banking Card code Action'
+description: 'Runs card code in an emulated environment'
+inputs:
+  who-to-greet:  # id of input
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+outputs:
+  time: # id of output
+    description: 'The time we greeted you'
+runs:
+  using: 'node20'
+  main: 'index.js'
