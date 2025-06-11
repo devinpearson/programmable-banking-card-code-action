@@ -4,7 +4,7 @@ This action prints "Hello World" or "Hello" + the name of a person to greet to t
 
 ## Inputs
 
-### `who-to-greet`
+### `payments-file`
 
 **Required** The name of the person to greet. Default `"World"`.
 
@@ -17,7 +17,7 @@ The time we greeted you.
 ## Example usage
 
 ```yaml
-uses: actions/hello-world-javascript-action@e76147da8e5c81eaf017dede5645551d4b94427b
+uses: actions/programmable-banking-card-code-action@0.1
 with:
-  who-to-greet: 'Mona the Octocat'
+  payments-file: 'payments.yml'
 ```

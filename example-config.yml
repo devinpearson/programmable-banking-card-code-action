@@ -1,0 +1,9 @@
+payments:
+  - dayOfMonth: 15
+    accountId: ACC123456
+    beneficiaryId: BEN7890
+    reference: "Monthly payment for services"
+  - dayOfMonth: 28
+    accountId: ACC654321
+    beneficiaryId: BEN1234
+    reference: "End of month transfer"
