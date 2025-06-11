@@ -15,6 +15,7 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "vitest": "^3.2.3"
+    "vitest": "^3.2.3",
+    "investec-ipb": "^0.8.1-rc.4"
   }
 }

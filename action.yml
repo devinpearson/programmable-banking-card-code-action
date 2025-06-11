@@ -1,13 +1,25 @@
-name: 'Programmable Banking Card code Action'
-description: 'Runs card code in an emulated environment'
+name: 'Programmable Banking Transfer Action'
+description: 'Transfers money between accounts using Investec Programmable Banking (devinpearson/ipb)'
 inputs:
   payments-file:  # id of input
     description: 'Payment File'
     required: true
     default: 'payments.yml'
+  clientId:
+    description: 'Investec API Client ID'
+    required: true
+  clientSecret:
+    description: 'Investec API Client Secret'
+    required: true
+  apiKey:
+    description: 'Investec API Key'
+    required: true
+  accountId:
+    description: 'Account ID of the sending account'
+    required: true
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  transactionIds:
+    description: 'Array of transaction IDs for the transfers performed.'
 runs:
   using: 'node20'
   main: 'index.js'
