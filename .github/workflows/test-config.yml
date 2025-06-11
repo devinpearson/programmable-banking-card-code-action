@@ -9,5 +9,8 @@ jobs:
       - name: Run programmable-banking-card-code-action
         uses: ./
         with:
-          who-to-greet: "Test User"
-          config-file: example-config.yml
+          payments-file: example-config.yml
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          apiKey: ${{ secrets.API_KEY }}
+          accountId: ${{ secrets.ACCOUNT_ID }}

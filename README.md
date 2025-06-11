@@ -5,18 +5,23 @@ This GitHub Action enables the transfer of money between two accounts using the 
 ## Inputs
 
 ### `clientId`
+
 **Required**: The Investec API Client ID.
 
 ### `clientSecret`
+
 **Required**: The Investec API Client Secret.
 
 ### `apiKey`
+
 **Required**: The Investec API Key.
 
 ### `accountId`
+
 **Required**: The account ID of the sending account.
 
 ### `payment-file`
+
 **Required**: A file containing the payment details in YAML format. This file should be structured as follows:
 
 ```yaml
@@ -34,6 +39,7 @@ transfers:
 ## Outputs
 
 ### `transactionIds`
+
 An array of transaction IDs for the transfers performed.
 
 ## Example usage
