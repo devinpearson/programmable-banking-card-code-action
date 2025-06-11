@@ -4,7 +4,7 @@ import * as github from '@actions/github';
 import fs from 'fs';
 import yaml from 'js-yaml';
 
-const { InvestecApi } = require('investec-ipb');
+import { InvestecApi } from 'investec-ipb';
 
 async function main() {
   try {

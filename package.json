@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +17,6 @@
   },
   "devDependencies": {
     "vitest": "^3.2.3",
-    "investec-ipb": "^0.8.1-rc.4"
+    "investec-ipb": "^0.8.1"
   }
 }
