@@ -13,10 +13,10 @@
   "dependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0",
+    "investec-pb-api": "^0.3.10",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "vitest": "^3.2.3",
-    "investec-ipb": "^0.8.1"
+    "vitest": "^3.2.3"
   }
 }

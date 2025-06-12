@@ -3,8 +3,7 @@ import * as core from '@actions/core';
 import * as github from '@actions/github';
 import fs from 'fs';
 import yaml from 'js-yaml';
-
-import { InvestecApi } from 'investec-ipb';
+import InvestecPbApi from 'investec-pb-api';
 
 async function main() {
   try {
@@ -16,9 +15,9 @@ async function main() {
     const apiKey = core.getInput('apiKey', { required: true });
     const accountId = core.getInput('accountId', { required: true });
     const paymentsFile = core.getInput('payments-file', { required: true });
-    displayPayment(paymentsFile);
+    const payments = displayPayment(paymentsFile);
 
-    const transactionIds = await transferFunds(clientId, clientSecret, apiKey, accountId, paymentsFile);
+    const transactionIds = await transferFunds(clientId, clientSecret, apiKey, accountId, payments);
     core.setOutput('transactionIds', JSON.stringify(transactionIds));
   } catch (error) {
     core.setFailed(error.message);
@@ -31,14 +30,6 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
 
 async function displayPayment(paymentsFile) {
   try {
-    // `who-to-greet` input defined in action metadata file
-    //const nameToGreet = core.getInput('who-to-greet');
-    //console.log(`Hello ${nameToGreet}!`);
-    
-    // // Get the JSON webhook payload for the event that triggered the workflow
-    // const payload = JSON.stringify(github.context.payload, undefined, 2)
-    // console.log(`The event payload: ${payload}`);
-
     // Accept a YAML config file input
     const configFile = paymentsFile;
     console.log(`file: ${configFile}!`);
@@ -49,47 +40,46 @@ async function displayPayment(paymentsFile) {
       // Support an array of payments
       const payments = Array.isArray(config.payments) ? config.payments : [config];
       payments.forEach((payment, idx) => {
-        const { dayOfMonth, accountId, beneficiaryId, reference } = payment;
+        const { dayOfMonth, accountId, amount, beneficiaryId, reference } = payment;
         console.log(`Payment #${idx + 1}`);
         console.log(`  Day of Month: ${dayOfMonth}`);
         console.log(`  Account ID: ${accountId}`);
+        console.log(`  Amount: ${amount}`);
         console.log(`  Beneficiary ID: ${beneficiaryId}`);
         console.log(`  Reference: ${reference}`);
       });
       // Optionally, set outputs for the first payment
       if (payments.length > 0) {
-        const { dayOfMonth, accountId, beneficiaryId, reference } = payments[0];
+        const { dayOfMonth, accountId, amount, beneficiaryId, reference } = payments[0];
         core.setOutput('day-of-month', dayOfMonth);
         core.setOutput('account-id', accountId);
+        core.setOutput('amount', amount);
         core.setOutput('beneficiary-id', beneficiaryId);
         core.setOutput('reference', reference);
       }
+      return payments;
     }
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
-async function transferFunds(clientId, clientSecret, apiKey, accountId, paymentsFile) {
+async function transferFunds(clientId, clientSecret, apiKey, accountId, payments) {
   try {
-    const investecApi = new InvestecApi({
+    const investecApi = new InvestecPbApi({
       clientId,
       clientSecret,
       apiKey,
     });
 
-    // Load payments from the YAML file
-    const fileContents = fs.readFileSync(paymentsFile, 'utf8');
-    const payments = yaml.load(fileContents).payments;
-
     // Process each payment
     const transactionIds = [];
     for (const payment of payments) {
-      const response = await investecApi.transferFunds({
-        accountId,
-        beneficiaryId: payment.beneficiaryId,
+      const response = await investecApi.transferMultiple(accountId,{
+        beneficiaryAccountId: payment.beneficiaryId,
         amount: payment.amount,
-        reference: payment.reference,
+        myReference: payment.reference,
+        theirReference: payment.reference,
       });
       transactionIds.push(response.transactionId);
     }

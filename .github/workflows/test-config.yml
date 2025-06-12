@@ -13,4 +13,4 @@ jobs:
           clientId: ${{ secrets.CLIENT_ID }}
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           apiKey: ${{ secrets.API_KEY }}
-          accountId: ${{ secrets.ACCOUNT_ID }}
+          accountId: '4675778129910189603223579'
