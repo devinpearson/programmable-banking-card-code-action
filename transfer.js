@@ -1,6 +1,6 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
-import {InvestecPbApi} from 'investec-pb-api';
+// import {InvestecPbApi} from 'investec-pb-api';
 
 export async function displayPayment(paymentsFile) {
     // Accept a YAML config file input
@@ -34,22 +34,25 @@ export async function displayPayment(paymentsFile) {
 }
 
 export async function transferFunds(clientId, clientSecret, apiKey, accountId, payments) {
-    const investecApi = new InvestecPbApi({
+  console.log(clientId, clientSecret, apiKey, accountId, payments);
+  const { InvestecPbApi } = await import("investec-pb-api");
+    const investecApi = new InvestecPbApi(
       clientId,
       clientSecret,
       apiKey,
-    });
-    const accessResponse = await investecApi.getAccessToken();
+    );
+    await investecApi.getAccessToken();
     // Process each payment
     const transactionIds = [];
     for (const payment of payments) {
-      const response = await investecApi.transferMultiple(accountId,{
+      const response = await investecApi.transferMultiple(payment.accountId,{
         beneficiaryAccountId: payment.beneficiaryId,
         amount: payment.amount,
         myReference: payment.reference,
         theirReference: payment.reference,
       });
-      transactionIds.push(response.transactionId);
+      console.log(`Transfer response: ${JSON.stringify(response)}`);
+      transactionIds.push(response.data.TransferResponses[0].PaymentReferenceNumber);
     }
 
     return transactionIds;
