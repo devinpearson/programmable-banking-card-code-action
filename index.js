@@ -1,10 +1,7 @@
 
 import * as core from '@actions/core';
 import * as github from '@actions/github';
-import fs from 'fs';
-import yaml from 'js-yaml';
-import {InvestecPbApi} from 'investec-pb-api';
-
+import { displayPayment, transferFunds } from './transfer.js';
 async function main() {
   try {
     const payload = JSON.stringify(github.context.payload, undefined, 2)
@@ -15,7 +12,7 @@ async function main() {
     const apiKey = core.getInput('apiKey', { required: true });
     const accountId = core.getInput('accountId', { required: true });
     const paymentsFile = core.getInput('payments-file', { required: true });
-    const payments = displayPayment(paymentsFile);
+    const payments = await displayPayment(paymentsFile);
 
     const transactionIds = await transferFunds(clientId, clientSecret, apiKey, accountId, payments);
     core.setOutput('transactionIds', JSON.stringify(transactionIds));
@@ -28,67 +25,6 @@ if (process.argv[1] === new URL(import.meta.url).pathname) {
   main();
 }
 
-async function displayPayment(paymentsFile) {
-  try {
-    // Accept a YAML config file input
-    const configFile = paymentsFile;
-    console.log(`file: ${configFile}!`);
-    let config = null;
-    if (configFile) {
-      const fileContents = fs.readFileSync(configFile, 'utf8');
-      config = yaml.load(fileContents);
-      // Support an array of payments
-      const payments = Array.isArray(config.payments) ? config.payments : [config];
-      payments.forEach((payment, idx) => {
-        const { dayOfMonth, accountId, amount, beneficiaryId, reference } = payment;
-        console.log(`Payment #${idx + 1}`);
-        console.log(`  Day of Month: ${dayOfMonth}`);
-        console.log(`  Account ID: ${accountId}`);
-        console.log(`  Amount: ${amount}`);
-        console.log(`  Beneficiary ID: ${beneficiaryId}`);
-        console.log(`  Reference: ${reference}`);
-      });
-      // Optionally, set outputs for the first payment
-      if (payments.length > 0) {
-        const { dayOfMonth, accountId, amount, beneficiaryId, reference } = payments[0];
-        core.setOutput('day-of-month', dayOfMonth);
-        core.setOutput('account-id', accountId);
-        core.setOutput('amount', amount);
-        core.setOutput('beneficiary-id', beneficiaryId);
-        core.setOutput('reference', reference);
-      }
-      return payments;
-    }
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-async function transferFunds(clientId, clientSecret, apiKey, accountId, payments) {
-  try {
-    const investecApi = new InvestecPbApi({
-      clientId,
-      clientSecret,
-      apiKey,
-    });
-
-    // Process each payment
-    const transactionIds = [];
-    for (const payment of payments) {
-      const response = await investecApi.transferMultiple(accountId,{
-        beneficiaryAccountId: payment.beneficiaryId,
-        amount: payment.amount,
-        myReference: payment.reference,
-        theirReference: payment.reference,
-      });
-      transactionIds.push(response.transactionId);
-    }
-
-    return transactionIds;
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-}
 
 async function old() {
   let transfers;
