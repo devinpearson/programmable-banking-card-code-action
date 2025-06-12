@@ -1,4 +1,4 @@
-import { displayPayment, transferFunds } from './transfer.js';
+import { displayPayment, transferFunds } from './src/transfer.js';
 async function main() {
   try {
     // Simulate the GitHub context payload
@@ -10,7 +10,8 @@ async function main() {
     const paymentsFile = 'example-config.yml';
     const payments = await displayPayment(paymentsFile);
     console.log(payments);
-    //const transactionIds = await transferFunds(clientId, clientSecret, apiKey, accountId, payments);
+    const transactionIds = await transferFunds(clientId, clientSecret, apiKey, accountId, payments);
+    console.log(`Transaction IDs: ${JSON.stringify(transactionIds)}`);
     //core.setOutput('transactionIds', JSON.stringify(transactionIds));
   } catch (error) {
     console.log(`Error: ${error.message}`);

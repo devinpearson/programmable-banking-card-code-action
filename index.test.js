@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as core from '@actions/core';
-import { run } from './index.js';
+import { run } from './src/index.js';
 
 vi.mock('@actions/core');
 

@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/bundle.js --tree-shaking=false --format=esm --target=esnext --platform=node --external:@actions/core --external:@actions/github",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,6 +14,7 @@
   "dependencies": {
     "@actions/core": "^1.10.1",
     "@actions/github": "^6.0.0",
+    "esbuild": "^0.25.5",
     "investec-pb-api": "^0.3.10",
     "js-yaml": "^4.1.0"
   },

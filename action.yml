@@ -22,4 +22,4 @@ outputs:
     description: 'Array of transaction IDs for the transfers performed.'
 runs:
   using: 'node20'
-  main: 'index.js'
+  main: 'dist/bundle.js'
