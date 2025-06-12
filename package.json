@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outfile=dist/bundle.js --tree-shaking=false --format=esm --target=esnext --platform=node --external:@actions/core --external:@actions/github",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/bundle.js --tree-shaking=false --format=esm --target=esnext --platform=node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
