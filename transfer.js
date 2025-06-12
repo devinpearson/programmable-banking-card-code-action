@@ -39,7 +39,7 @@ export async function transferFunds(clientId, clientSecret, apiKey, accountId, p
       clientSecret,
       apiKey,
     });
-
+    const accessResponse = await investecApi.getAccessToken();
     // Process each payment
     const transactionIds = [];
     for (const payment of payments) {
