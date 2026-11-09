@@ -6,11 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run programmable-banking-card-code-action
+      - name: Run programmable-banking-card-code-action (dry run)
         uses: ./
         with:
           payments-file: example-config.yml
           clientId: ${{ secrets.CLIENT_ID }}
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           apiKey: ${{ secrets.API_KEY }}
-          accountId: '4675778129910189603223579'
+          dry-run: true

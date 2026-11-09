@@ -1,6 +1,6 @@
 payments:
   - dayOfMonth: 15
-    accountId: '4675778129910189603223579'
+    accountId: 'YOUR_SENDING_ACCOUNT_ID'
     amount: 10
-    beneficiaryId: '4675778129910189603230088'
+    beneficiaryId: 'YOUR_RECEIVING_ACCOUNT_ID'
     reference: "Monthly saving"
