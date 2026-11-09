@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/index.ts --bundle --outfile=dist/bundle.js --tree-shaking=false --format=esm --target=esnext --platform=node",
+    "build": "esbuild src/index.ts --bundle --outfile=dist/bundle.js --tree-shaking=false --format=esm --target=node20 --platform=node --banner:js=\"import { createRequire } from 'module'; const require = createRequire(import.meta.url);\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

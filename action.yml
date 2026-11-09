@@ -1,8 +1,8 @@
 name: 'Programmable Banking Transfer Action'
-description: 'Transfers money between accounts using Investec Programmable Banking (devinpearson/ipb)'
+description: 'Transfers money between accounts using the Investec Programmable Banking API'
 inputs:
-  payments-file:  # id of input
-    description: 'Payment File'
+  payments-file:
+    description: 'Path to the YAML file listing the payments to make'
     required: true
     default: 'payments.yml'
   clientId:
@@ -15,11 +15,18 @@ inputs:
     description: 'Investec API Key'
     required: true
   accountId:
-    description: 'Account ID of the sending account'
-    required: true
+    description: 'Default sending account ID, used for payments that do not set their own accountId'
+    required: false
+    default: ''
+  dry-run:
+    description: 'When true (the default), validate and log the payments without moving any money. Set to false to transfer.'
+    required: false
+    default: 'true'
 outputs:
   transactionIds:
-    description: 'Array of transaction IDs for the transfers performed.'
+    description: 'JSON array of payment reference numbers for the transfers performed'
+  results:
+    description: 'JSON array with the outcome of each payment (transferred, skipped or dry-run)'
 runs:
   using: 'node20'
   main: 'dist/bundle.js'
